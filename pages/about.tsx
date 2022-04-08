@@ -1,11 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import type { NextPage } from 'next';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Link from '../components/Link';
 
-const Home: NextPage = () => {
+const About: NextPage = () => {
   return (
     <Container maxWidth="lg">
       <Box
@@ -20,12 +21,14 @@ const Home: NextPage = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           TS Nextjs MUI
         </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
-        </Link>
+        <Box maxWidth="sm">
+          <Button variant="contained" component={Link} noLinkStyle href="/">
+            Go to the home page
+          </Button>
+        </Box>
       </Box>
     </Container>
   );
 };
 
-export default Home;
+export default About;
