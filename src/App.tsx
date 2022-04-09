@@ -2,7 +2,7 @@ import { CacheProvider } from '@emotion/react';
 import { CssBaseline, Paper, ThemeProvider } from '@mui/material';
 import React from 'react';
 import './App.css';
-import Dashboard from './components/dashboard/Dashboard';
+import Dashboard from './components/Dashboard';
 import theme from './styles/theme';
 import createEmotionCache from './utils/createEmotionCache';
 

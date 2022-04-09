@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { NavList } from './NavList';
+import { NavList } from './nav/NavList';
 
 const drawerWidth: number = 240;
 
