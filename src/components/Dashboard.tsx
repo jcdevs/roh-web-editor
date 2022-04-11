@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { NavList } from './nav/NavList';
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth: number = 240;
 
@@ -69,10 +70,23 @@ export interface DashboardProps {
 }
 
 function DashboardContent(props: DashboardProps) {
+  const location = useLocation();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  // extract page title from location
+  const title = useMemo(() => {
+    const { pathname } = location;
+    const extraction = pathname.match(/\/(?<title>\w+)(\/|$)/);
+    if (extraction && extraction.groups) {
+      const { title } = extraction.groups;
+      return title.charAt(0).toUpperCase() + title.slice(1);
+    } else {
+      return '';
+    }
+  }, [location]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -101,7 +115,7 @@ function DashboardContent(props: DashboardProps) {
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            RoH Web Editor
+            {title}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
