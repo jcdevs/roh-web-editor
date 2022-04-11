@@ -1,13 +1,16 @@
 import { Delete } from "@mui/icons-material";
 import { IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from "@mui/material";
 import React, { useMemo } from "react";
+import { NavigateFunction, Outlet, useNavigate } from "react-router-dom";
 import { getMockQuestArray, Quest } from "../../types/Quest";
 
-type QuestRowProps = Quest;
+type QuestRowProps = Quest & {
+  nav: NavigateFunction
+};
 
 const QuestRow = (props: QuestRowProps) => {
   return (
-    <React.Fragment key={`${props.id}`}>
+    <React.Fragment>
       <ListItem
         secondaryAction={
           <IconButton edge="end" aria-label="delete">
@@ -16,13 +19,12 @@ const QuestRow = (props: QuestRowProps) => {
         }
         divider
       >
-        <ListItemButton role={undefined}>
+        <ListItemButton onClick={() => props.nav(`/quests/${props.id.id}`)}>
           <ListItemText
-            id={props.id}
             primary={
               <React.Fragment>
                 <Typography component="div" variant="caption" color="text.secondary">
-                  {` ${props.id}`}
+                  {`${props.id.area}.${props.id.id}`}
                 </Typography>
                 <Typography component="span" variant="h6">
                   {props.name}
@@ -39,21 +41,25 @@ const QuestRow = (props: QuestRowProps) => {
   );
 }
 
-interface QuestListViewProps {}
+interface QuestListProps {}
 
-const QuestListView = (props: QuestListViewProps) => {
+const QuestList = (props: QuestListProps) => {
+  const nav = useNavigate();
   const quests = useMemo(() => getMockQuestArray(10), []);
-  const mockQuestRows = useMemo(() => quests.map(QuestRow), [quests]);
+  const questRows = useMemo(() => {
+    return quests.map(quest => <QuestRow {...quest} nav={nav} key={`${quest.id.area}.${quest.id.id}`} />);
+  }, [quests, nav]);
 
   return (
     <React.Fragment>
       <Paper>
         <List>
-          {mockQuestRows}
+          {questRows}
         </List>
       </Paper>
+      <Outlet />
     </React.Fragment>
   );
 }
 
-export default QuestListView;
+export default QuestList;

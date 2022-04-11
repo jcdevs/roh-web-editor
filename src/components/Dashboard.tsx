@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { NavList } from './nav/NavList';
-import { useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const drawerWidth: number = 240;
 
@@ -157,7 +157,7 @@ function DashboardContent(props: DashboardProps) {
         <Toolbar />
 
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {props.children}
+          <Outlet />
         </Container>
 
       </Box>

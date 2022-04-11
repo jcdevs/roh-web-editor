@@ -1,17 +1,14 @@
 import { getIpsum } from "../utils/getIpsum";
+import { MudId } from "./MudId";
 
-export type QuestObjectIdentifier = {
-  area: string;
-  id: number;
-  reqNum: number;
-}
+export type QuestObjectIdentifier = MudId & { reqNum: number; }
 
 export type QuestRequirement = QuestObjectIdentifier;
 export type QuestReward = QuestObjectIdentifier;
 export type QuestTurnInMob = QuestObjectIdentifier;
 
 export type Quest = {
-  id: string;
+  id: MudId;
   completionString: string;
   description: string;
   level: number;
@@ -28,14 +25,14 @@ export type Quest = {
     itemsToGet: QuestRequirement[];
     mobsToKill: QuestRequirement[];
     roomsToVisit: QuestRequirement[];
-  }
+  };
   revision: string;
   rewards: {
     alignmentChange: number;
     cashReward: number[];
     expReward: number;
     itemRewards: QuestReward[];
-  }
+  };
   sharable: boolean;
   timesRepeatable: number;
   turnInMob: QuestTurnInMob;
@@ -63,7 +60,7 @@ export const getMockQuest = (): Quest => {
   const { area, id } = identifier;
 
   return {
-    id: `${area}.${id}`,
+    id: { area, id },
     completionString: getIpsum(4),
     description: getIpsum(3),
     level: 0,
