@@ -1,11 +1,12 @@
 import { Delete } from "@mui/icons-material";
 import { IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from "@mui/material";
 import React, { useMemo } from "react";
-import { NavigateFunction, Outlet, useNavigate } from "react-router-dom";
-import { getMockQuestArray, Quest } from "../../types/Quest";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { getMockQuestArray, Quest } from "../../data/interfaces/Quest";
+import { getListKey } from "../../utils/MudObjects";
 
 type QuestRowProps = Quest & {
-  nav: NavigateFunction
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const QuestRow = (props: QuestRowProps) => {
@@ -19,7 +20,7 @@ const QuestRow = (props: QuestRowProps) => {
         }
         divider
       >
-        <ListItemButton onClick={() => props.nav(`/quests/${props.id.id}`)}>
+        <ListItemButton onClick={props.onClick}>
           <ListItemText
             primary={
               <React.Fragment>
@@ -45,10 +46,15 @@ interface QuestListProps {}
 
 const QuestList = (props: QuestListProps) => {
   const nav = useNavigate();
+  const loc = useLocation();
   const quests = useMemo(() => getMockQuestArray(10), []);
   const questRows = useMemo(() => {
-    return quests.map(quest => <QuestRow {...quest} nav={nav} key={`${quest.id.area}.${quest.id.id}`} />);
-  }, [quests, nav]);
+    return quests.map(quest => {
+      return (
+        <QuestRow {...quest} onClick={() => nav(`${loc.pathname}${quest.id.id}`)} key={`${getListKey(quest)}`} />
+      );
+    });
+  }, [quests, loc, nav]);
 
   return (
     <React.Fragment>

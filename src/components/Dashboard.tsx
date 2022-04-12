@@ -13,7 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { NavList } from './nav/NavList';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 
 const drawerWidth: number = 240;
 
@@ -70,7 +70,7 @@ export interface DashboardProps {
 }
 
 function DashboardContent(props: DashboardProps) {
-  const location = useLocation();
+  const urlParams = useParams();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -78,15 +78,23 @@ function DashboardContent(props: DashboardProps) {
 
   // extract page title from location
   const title = useMemo(() => {
-    const { pathname } = location;
-    const extraction = pathname.match(/\/(?<title>\w+)(\/|$)/);
-    if (extraction && extraction.groups) {
-      const { title } = extraction.groups;
-      return title.charAt(0).toUpperCase() + title.slice(1);
-    } else {
-      return '';
+    const { area, objectType } = urlParams;
+    
+    if (area) {
+      const areaTitle = area.charAt(0).toUpperCase() + area.slice(1);
+      const objectTitle = objectType ? objectType.charAt(0).toUpperCase() + objectType.slice(1) : '';
+      return `${areaTitle} ${objectTitle}`;
     }
-  }, [location]);
+    return '';
+    // const { pathname } = location;
+    // const extraction = pathname.match(/\/(?<title>\w+)(\/|$)/);
+    // if (extraction && extraction.groups) {
+    //   const { title } = extraction.groups;
+    //   return title.charAt(0).toUpperCase() + title.slice(1);
+    // } else {
+    //   return '';
+    // }
+  }, [urlParams]);
 
   return (
     <Box sx={{ display: 'flex' }}>

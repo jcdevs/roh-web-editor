@@ -1,14 +1,16 @@
-import { getIpsum } from "../utils/getIpsum";
+import { getIpsum } from "../../utils/getIpsum";
 import { MudId } from "./MudId";
+import { MudObject } from "./MudObject";
 
-export type QuestObjectIdentifier = MudId & { reqNum: number; }
+export interface QuestObjectIdentifier extends MudId {
+  reqNum: number;
+}
 
-export type QuestRequirement = QuestObjectIdentifier;
-export type QuestReward = QuestObjectIdentifier;
-export type QuestTurnInMob = QuestObjectIdentifier;
+export interface QuestRequirement extends QuestObjectIdentifier {};
+export interface QuestReward extends QuestObjectIdentifier {};
+export interface QuestTurnInMob extends QuestObjectIdentifier {};
 
-export type Quest = {
-  id: MudId;
+export interface Quest extends MudObject {
   completionString: string;
   description: string;
   level: number;
