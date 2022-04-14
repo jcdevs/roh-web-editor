@@ -1,6 +1,6 @@
-import { Delete } from "@mui/icons-material";
-import { IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from "@mui/material";
-import React, { useMemo } from "react";
+import { Add, Delete } from "@mui/icons-material";
+import { Box, Fab, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from "@mui/material";
+import React, { useCallback, useMemo } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { getMockQuestArray, Quest } from "../../data/interfaces/Quest";
 import { getListKey } from "../../utils/MudObjects";
@@ -48,23 +48,32 @@ const QuestList = (props: QuestListProps) => {
   const nav = useNavigate();
   const loc = useLocation();
   const quests = useMemo(() => getMockQuestArray(10), []);
+
   const questRows = useMemo(() => {
     return quests.map(quest => {
       return (
-        <QuestRow {...quest} onClick={() => nav(`${loc.pathname}${quest.id.id}`)} key={`${getListKey(quest)}`} />
+        <QuestRow {...quest} onClick={() => nav(`${loc.pathname}/${quest.id.id}`)} key={`${getListKey(quest)}`} />
       );
     });
-  }, [quests, loc, nav]);
+  }, [quests, loc.pathname, nav]);
+
+  const addFab = useMemo(() => {
+    return (
+      <Fab onClick={() => nav(`${loc.pathname}/new`)} color="primary" sx={{position: 'absolute', bottom: 16, right: 32}}>
+        <Add />
+      </Fab>
+    );
+  }, [loc.pathname, nav]);
 
   return (
-    <React.Fragment>
+    <Box>
       <Paper>
         <List>
           {questRows}
         </List>
+        {addFab}
       </Paper>
-      <Outlet />
-    </React.Fragment>
+    </Box>
   );
 }
 

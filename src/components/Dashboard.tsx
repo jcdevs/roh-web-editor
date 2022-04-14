@@ -78,22 +78,25 @@ function DashboardContent(props: DashboardProps) {
 
   // extract page title from location
   const title = useMemo(() => {
-    const { area, objectType } = urlParams;
+    const { area, objectType, id } = urlParams;
+
+    let areaTitle = area ? area.charAt(0).toUpperCase() + area.slice(1) : '';
+    let objectTitle = objectType ? objectType.charAt(0).toUpperCase() + objectType.slice(1) : '';;
     
-    if (area) {
-      const areaTitle = area.charAt(0).toUpperCase() + area.slice(1);
-      const objectTitle = objectType ? objectType.charAt(0).toUpperCase() + objectType.slice(1) : '';
+    if (area && objectType && id) {
+      // on create/edit view
+      if (id === 'new') {
+        return `Create ${areaTitle} ${objectTitle.slice(0, -1)}`;
+      }
+      return `Editing ${objectTitle.slice(0, -1)} ${area}.${id}`;
+    } else if (area && objectType) {
+      // on list view
       return `${areaTitle} ${objectTitle}`;
+    } else if (area) {
+      // only area selected
+      return areaTitle;
     }
     return '';
-    // const { pathname } = location;
-    // const extraction = pathname.match(/\/(?<title>\w+)(\/|$)/);
-    // if (extraction && extraction.groups) {
-    //   const { title } = extraction.groups;
-    //   return title.charAt(0).toUpperCase() + title.slice(1);
-    // } else {
-    //   return '';
-    // }
   }, [urlParams]);
 
   return (

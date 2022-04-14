@@ -17,10 +17,7 @@ export interface Quest extends MudObject {
   minFaction: number;
   minLevel: number;
   name: string;
-  preRequisites: {
-    area: string;
-    id: number;
-  }[];
+  preRequisites: (MudId | undefined)[];
   receiveString: string;
   repeatFrequency: number;
   requirements: {
