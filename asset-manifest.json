@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/roh-web-editor/static/css/main.073c9b0a.css",
+    "main.js": "/roh-web-editor/static/js/main.44156c86.js",
+    "static/js/787.bc10f988.chunk.js": "/roh-web-editor/static/js/787.bc10f988.chunk.js",
+    "index.html": "/roh-web-editor/index.html",
+    "main.073c9b0a.css.map": "/roh-web-editor/static/css/main.073c9b0a.css.map",
+    "main.44156c86.js.map": "/roh-web-editor/static/js/main.44156c86.js.map",
+    "787.bc10f988.chunk.js.map": "/roh-web-editor/static/js/787.bc10f988.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.44156c86.js"
+  ]
+}
