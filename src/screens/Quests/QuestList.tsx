@@ -1,7 +1,7 @@
 import { Add, Delete } from "@mui/icons-material";
 import { Box, Fab, IconButton, List, ListItem, ListItemButton, ListItemText, Paper, Typography } from "@mui/material";
-import React, { useCallback, useMemo } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import React, { useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getMockQuestArray, Quest } from "../../data/interfaces/Quest";
 import { getListKey } from "../../utils/MudObjects";
 
