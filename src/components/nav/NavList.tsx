@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Assignment, BusinessCenter, MeetingRoom, Pets } from '@mui/icons-material';
+import { Divider, FormControl, InputLabel, List, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Assignment, BusinessCenter, MeetingRoom, Pets } from '@mui/icons-material';
-import { Divider, FormControl, InputLabel, List, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@mui/system';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface NavItem {
   text: string;
@@ -25,10 +25,10 @@ interface NavListProps {}
 export const NavList = (props: NavListProps) => {
   const nav = useNavigate();
   const urlParams = useParams();
-  const [area, setArea] = useState(urlParams.area || '');
+  const [area, setArea] = useState(urlParams.area || 'all');
 
   useEffect(() => {
-    setArea(urlParams.area || '');
+    setArea(urlParams.area || 'all');
   }, [urlParams.area]);
 
   const changeArea = useCallback((event: SelectChangeEvent) => {
@@ -46,14 +46,15 @@ export const NavList = (props: NavListProps) => {
         <FormControl fullWidth margin="dense">
           <InputLabel>Area</InputLabel>
           <Select
+            defaultValue='all'
             value={area}
             label="Age"
             onChange={changeArea}
           >
-            <MenuItem value={'all'}>All</MenuItem>
-            <MenuItem value={'test'}>Test</MenuItem>
-            <MenuItem value={'build'}>Build</MenuItem>
-            <MenuItem value={'highport'}>Highport</MenuItem>
+            <MenuItem value='all'>All</MenuItem>
+            <MenuItem value='test'>Test</MenuItem>
+            <MenuItem value='build'>Build</MenuItem>
+            <MenuItem value='highport'>Highport</MenuItem>
           </Select>
         </FormControl>
       </Box>
