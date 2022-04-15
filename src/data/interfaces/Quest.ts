@@ -21,9 +21,9 @@ export interface Quest extends MudObject {
   receiveString: string;
   repeatFrequency: number;
   requirements: {
-    itemsToGet: QuestRequirement[];
-    mobsToKill: QuestRequirement[];
-    roomsToVisit: QuestRequirement[];
+    itemsToGet: (QuestRequirement | undefined)[];
+    mobsToKill: (QuestRequirement | undefined)[];
+    roomsToVisit: (QuestRequirement | undefined)[];
   };
   revision: string;
   rewards: {

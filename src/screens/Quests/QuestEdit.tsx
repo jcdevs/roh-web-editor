@@ -1,9 +1,9 @@
 import { Box, Button, Checkbox, Divider, FormControlLabel, FormLabel, Grid, TextField } from "@mui/material";
 import { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
-import AutocompleteQuantity from "../../components/AutocompleteQuantity";
-import { getMockQuestArray, getMockQuestIdentifierArray, Quest, QuestObjectIdentifier } from "../../data/interfaces/Quest";
+import { getMockQuestArray, getMockQuestIdentifierArray, Quest } from "../../data/interfaces/Quest";
 import PrereqRow from "./PrereqRow";
+import ReqRow, { Creature, Item, Room } from "./ReqRow";
 
 enum QuestReqType {
   ROOM = 'roomsToVisit',
@@ -47,14 +47,7 @@ const defaultValues: Quest = {
 }
 
 const mockPrereqs = getMockQuestArray(10);
-
 const mockQuestIdentifiers = getMockQuestIdentifierArray(10);
-const mockQuestIdentifierOptions = mockQuestIdentifiers.map((q, idx) => {
-  return {
-    label: `(${q.area}.${q.id}) Some Name ${idx}`,
-    value: { area: q.area, id: q.id, reqNum: 0 }
-  }
-});
 
 // const defaultValues: Quest = {
 //   id: {
@@ -62,11 +55,6 @@ const mockQuestIdentifierOptions = mockQuestIdentifiers.map((q, idx) => {
 //     id: 0,
 //   },
 //   repeatable: boolean;   NOTE: automatically set based on timesRepeatable and repeatFrequency
-//   requirements: {
-//     itemsToGet: [],
-//     mobsToKill: [],
-//     roomsToVisit: [],
-//   },
 //   turnInMob: {
 //     area: '',
 //     id: 0,
@@ -89,7 +77,6 @@ const QuestEdit = (props: QuestEditProps) => {
 
   const handleInputChange = useCallback(event => {
     const { name, value } = event.target;
-    console.log(name, value);
     setFormValues(prev => ({
       ...prev,
       [name]: value,
@@ -98,7 +85,6 @@ const QuestEdit = (props: QuestEditProps) => {
 
   const handleCheckboxChange = useCallback(event => {
     const { name, checked } = event.target;
-    console.log(name, checked);
     setFormValues(prev => ({
       ...prev,
       [name]: checked,
@@ -113,8 +99,7 @@ const QuestEdit = (props: QuestEditProps) => {
   }, []);
 
   const handlePrereqChange = useCallback((idx: number, val?: Quest) => {
-    console.log(idx, val);
-    const newPrereqs = [...formValues.preRequisites];
+    let newPrereqs = [...formValues.preRequisites];
 
     if (val) {
       newPrereqs[idx] = { area: val.id.area, id: val.id.id };
@@ -165,14 +150,17 @@ const QuestEdit = (props: QuestEditProps) => {
     }
   }, []);
 
-  const handleRequirementChange = useCallback((type: QuestReqType, idx: number, val?: QuestObjectIdentifier) => {
+  const handleRequirementChange = useCallback((type: QuestReqType, idx: number, amount: number, val?: Room | Creature | Item) => {
     const newReqs = [...formValues.requirements[type]];
     if (val) {
-      newReqs[idx] = val;
+      newReqs[idx] = { area: val.area, id: val.id, reqNum: amount };
     } else {
-      newReqs.splice(idx, 1);
+      //newReqs.splice(idx, 1);
+      // workaround because splice results in another element acquiring the index,
+      // which means the list of Autocomplete does not know how to rerender properly.
+      // Note this will make the array grow continuously as long as the user is adding and removing rows.
+      newReqs[idx] = undefined;
     }
-    
     setFormValues(prev => ({
       ...prev,
       requirements: {
@@ -225,7 +213,6 @@ const QuestEdit = (props: QuestEditProps) => {
           </Grid>
           <Grid container item spacing={1} xs={12}>
             {formValues.preRequisites.map((prereq, idx) => {
-              console.log(idx, prereq);
               if (prereq) {
                 return (
                   <Grid item xs={12} key={idx}>
@@ -249,27 +236,55 @@ const QuestEdit = (props: QuestEditProps) => {
           </Grid>
           <Grid container item spacing={1} xs={12}>
             {formValues.requirements.roomsToVisit.map((room, idx) => {
-              return (
-                <Grid item xs={12} key={idx}>
-                  <AutocompleteQuantity
-                    label="Room"
-                    quantityLabel="Amount"
-                    options={mockQuestIdentifierOptions}
-                    onChange={selection => handleRequirementChange(QuestReqType.ROOM, idx, selection)}
-                    onRemove={() => handleRequirementChange(QuestReqType.ROOM, idx)}
-                  />
-                </Grid>
-              );
+              if (room) {
+                return (
+                  <Grid item xs={12} key={idx}>
+                    <ReqRow
+                      label="Room"
+                      quantityLabel="Amount"
+                      options={mockQuestIdentifiers}
+                      onChange={(selection: Room | undefined, amount: number) => handleRequirementChange(QuestReqType.ROOM, idx, amount, selection)}
+                      //onQuantityChange={(amount: number) => handleRequirementQuantityChange(QuestReqType.ROOM, idx, amount)}
+                      onRemove={() => handleRequirementChange(QuestReqType.ROOM, idx, 0)}
+                    />
+                  </Grid>
+                );
+              }
+              return null;
             })}
             {formValues.requirements.mobsToKill.map((mob, idx) => {
-              return (
-                null
-              );
+              if (mob) {
+                return (
+                  <Grid item xs={12} key={idx}>
+                    <ReqRow
+                      label="Mob"
+                      quantityLabel="Amount"
+                      options={mockQuestIdentifiers}
+                      onChange={(selection: Creature | undefined, amount: number) => handleRequirementChange(QuestReqType.MOB, idx, amount, selection)}
+                      //onQuantityChange={(amount: number) => handleRequirementQuantityChange(QuestReqType.MOB, idx, amount)}
+                      onRemove={() => handleRequirementChange(QuestReqType.MOB, idx, 0)}
+                    />
+                  </Grid>
+                );
+              }
+              return null;
             })}
             {formValues.requirements.itemsToGet.map((item, idx) => {
-              return (
-                null
-              );
+              if (item) {
+                return (
+                  <Grid item xs={12} key={idx}>
+                    <ReqRow
+                      label="Item"
+                      quantityLabel="Amount"
+                      options={mockQuestIdentifiers}
+                      onChange={(selection: Item | undefined, amount: number) => handleRequirementChange(QuestReqType.ITEM, idx, amount, selection)}
+                      //onQuantityChange={(amount: number) => handleRequirementQuantityChange(QuestReqType.ITEM, idx, amount)}
+                      onRemove={() => handleRequirementChange(QuestReqType.ITEM, idx, 0)}
+                    />
+                  </Grid>
+                );
+              }
+              return null;
             })}
           </Grid>
           <Grid container item spacing={2} xs={12}>
