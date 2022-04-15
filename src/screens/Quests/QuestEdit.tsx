@@ -1,6 +1,5 @@
-import { Box, Button, Checkbox, Divider, FormControlLabel, FormLabel, Grid, TextField } from "@mui/material";
-import { useCallback, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Autocomplete, Box, Button, Checkbox, Divider, FormControlLabel, FormLabel, Grid, TextField } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import { getMockQuestArray, getMockQuestIdentifierArray, Quest } from "../../data/interfaces/Quest";
 import PrereqRow from "./PrereqRow";
 import ReqRow, { Creature, Item, Room } from "./ReqRow";
@@ -31,7 +30,6 @@ const defaultValues: Quest = {
   turnInMob: {
     area: '',
     id: 0,
-    reqNum: 0,
   },
   completionString: '',
   rewards: {
@@ -55,11 +53,6 @@ const mockQuestIdentifiers = getMockQuestIdentifierArray(10);
 //     id: 0,
 //   },
 //   repeatable: boolean;   NOTE: automatically set based on timesRepeatable and repeatFrequency
-//   turnInMob: {
-//     area: '',
-//     id: 0,
-//     reqNum: 0,
-//   },
 //   rewards: {
 //     alignmentChange: 0,
 //     cashReward: [0, 0, 0, 0, 0],
@@ -72,8 +65,11 @@ const mockQuestIdentifiers = getMockQuestIdentifierArray(10);
 interface QuestEditProps {}
 
 const QuestEdit = (props: QuestEditProps) => {
-  const urlParams = useParams();
   const [formValues, setFormValues] = useState(defaultValues);
+
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   const handleInputChange = useCallback(event => {
     const { name, value } = event.target;
@@ -170,6 +166,18 @@ const QuestEdit = (props: QuestEditProps) => {
     }));
   }, [formValues.requirements]);
 
+  const handleTurninChange = useCallback((event, selection) => {
+    setFormValues(prev => ({
+      ...prev,
+      turnInMob: selection,
+    }));
+  }, []);
+//   rewards: {
+//     alignmentChange: 0,
+//     cashReward: [0, 0, 0, 0, 0],
+//     expReward: 0,
+//     itemRewards: []
+//   },
   return (
     <Box>
       <Grid container spacing={2}>
@@ -205,6 +213,67 @@ const QuestEdit = (props: QuestEditProps) => {
           </Grid>
           <Grid container item xs={4} md={2} alignItems="center">
             <FormControlLabel label="Sharable" control={<Checkbox />} onChange={handleCheckboxChange} labelPlacement="start" name="sharable" />
+          </Grid>
+        </Grid>
+        <Grid container item>
+            <Autocomplete
+              options={mockQuestIdentifiers}
+              getOptionLabel={opt => opt ? `(${opt.area}.${opt.id}) Some Name` : ''}
+              onChange={handleTurninChange}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Turnin Mob"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                  required
+                />
+              )}
+              fullWidth
+              disableClearable
+              clearOnBlur
+            />
+        </Grid>
+        <Grid container item spacing={1}>
+          <Grid container item xs={12}>
+            <Grid item xs={12}><Divider><FormLabel>Rewards</FormLabel></Divider></Grid>
+          </Grid>
+          <Grid container item xs={12} spacing={2}>
+            <Grid item xs={4}>
+              <TextField label="Alignment" value={formValues.rewards.alignmentChange} onChange={handleInputChange} fullWidth required name="alignmentChange" type="number"/>
+            </Grid>
+            <Grid item xs={4}>
+              <TextField label="Exp" value={formValues.rewards.expReward} onChange={handleInputChange} fullWidth required name="receiveString" type="number"/>
+            </Grid>
+            <Grid item xs={4}>
+              <TextField label="Gold" value={formValues.rewards.cashReward[2]} onChange={handleInputChange} fullWidth required name="completionString" type="number"/>
+            </Grid>
+            <Grid container item spacing={1} xs={12}>
+              {/* {formValues.requirements.roomsToVisit.map((room, idx) => {
+                if (room) {
+                  return (
+                    <Grid item xs={12} key={idx}>
+                      <ReqRow
+                        label="Room"
+                        quantityLabel="Amount"
+                        options={mockQuestIdentifiers}
+                        onChange={(selection: Room | undefined, amount: number) => handleRequirementChange(QuestReqType.ROOM, idx, amount, selection)}
+                        onRemove={() => handleRequirementChange(QuestReqType.ROOM, idx, 0)}
+                      />
+                    </Grid>
+                  );
+                }
+                return null;
+              })} */}
+              {formValues.rewards.itemRewards.map((item, idx) => {
+                
+              })}
+            </Grid>
+            <Grid item xs={12}>
+              <Button onClick={() =>{}} variant="contained" fullWidth>Add Item Reward</Button>
+            </Grid>
           </Grid>
         </Grid>
         <Grid container item spacing={1}>
@@ -244,7 +313,6 @@ const QuestEdit = (props: QuestEditProps) => {
                       quantityLabel="Amount"
                       options={mockQuestIdentifiers}
                       onChange={(selection: Room | undefined, amount: number) => handleRequirementChange(QuestReqType.ROOM, idx, amount, selection)}
-                      //onQuantityChange={(amount: number) => handleRequirementQuantityChange(QuestReqType.ROOM, idx, amount)}
                       onRemove={() => handleRequirementChange(QuestReqType.ROOM, idx, 0)}
                     />
                   </Grid>
@@ -261,7 +329,6 @@ const QuestEdit = (props: QuestEditProps) => {
                       quantityLabel="Amount"
                       options={mockQuestIdentifiers}
                       onChange={(selection: Creature | undefined, amount: number) => handleRequirementChange(QuestReqType.MOB, idx, amount, selection)}
-                      //onQuantityChange={(amount: number) => handleRequirementQuantityChange(QuestReqType.MOB, idx, amount)}
                       onRemove={() => handleRequirementChange(QuestReqType.MOB, idx, 0)}
                     />
                   </Grid>
@@ -278,7 +345,6 @@ const QuestEdit = (props: QuestEditProps) => {
                       quantityLabel="Amount"
                       options={mockQuestIdentifiers}
                       onChange={(selection: Item | undefined, amount: number) => handleRequirementChange(QuestReqType.ITEM, idx, amount, selection)}
-                      //onQuantityChange={(amount: number) => handleRequirementQuantityChange(QuestReqType.ITEM, idx, amount)}
                       onRemove={() => handleRequirementChange(QuestReqType.ITEM, idx, 0)}
                     />
                   </Grid>

@@ -34,7 +34,7 @@ export interface Quest extends MudObject {
   };
   sharable: boolean;
   timesRepeatable: number;
-  turnInMob: QuestTurnInMob;
+  turnInMob: MudId;
 }
 
 export const getMockQuestIdentifier = (): QuestObjectIdentifier => {
