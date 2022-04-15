@@ -30,7 +30,7 @@ export interface Quest extends MudObject {
     alignmentChange: number;
     cashReward: number[];
     expReward: number;
-    itemRewards: QuestReward[];
+    itemRewards: (QuestReward | undefined)[];
   };
   sharable: boolean;
   timesRepeatable: number;

@@ -7,7 +7,7 @@ export type Room = any;
 export type Creature = any;
 export type Item = any;
 
-interface ReqRowProps {
+interface SelectWithAmountProps {
   options: (Room | Creature | Item)[];
   onChange: (value: Room | Creature | Item, amount: number) => void;
   onRemove: () => void;
@@ -15,7 +15,7 @@ interface ReqRowProps {
   quantityLabel: string;
 }
 
-const ReqRow = ({options, onChange, onRemove, label, quantityLabel}: ReqRowProps) => {
+const SelectWithAmount = ({options, onChange, onRemove, label, quantityLabel}: SelectWithAmountProps) => {
   const [selection, setSelection] = useState();
   const [amount, setAmount] = useState(0);
 
@@ -70,4 +70,4 @@ const ReqRow = ({options, onChange, onRemove, label, quantityLabel}: ReqRowProps
   );
 };
 
-export default ReqRow;
+export default SelectWithAmount;
