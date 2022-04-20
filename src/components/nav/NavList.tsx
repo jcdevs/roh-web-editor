@@ -25,20 +25,22 @@ interface NavListProps {}
 export const NavList = (props: NavListProps) => {
   const nav = useNavigate();
   const urlParams = useParams();
-  const [area, setArea] = useState(urlParams.area || 'all');
+  const [area, setArea] = useState((!urlParams.area || urlParams.area === 'roh-web-editor') ? 'all' : urlParams.area);
 
-  useEffect(() => {
-    setArea(urlParams.area || 'all');
-  }, [urlParams.area]);
-
-  const changeArea = useCallback((event: SelectChangeEvent) => {
-    const { value } = event.target;
+  const changeArea = useCallback((event: SelectChangeEvent | string) => {
+    const value = typeof event === 'string' ? event : event.target.value;
     const objPath = urlParams.objectType ? `/${urlParams.objectType}` : '';
     const idPath = urlParams.id ? `/${urlParams.id}` : '';
     const newPath = `/${value}${objPath}${idPath}`;
     setArea(value);
     nav(newPath);
   }, [nav, urlParams]);
+
+  useEffect(() => {
+    if (urlParams.area === 'roh-web-editor') {
+      changeArea('all');
+    }
+  }, [changeArea, urlParams.area]);
 
   const areaSelector = useMemo(() => {
     return (
