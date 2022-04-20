@@ -1,17 +1,16 @@
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import React from 'react';
-import './App.css';
-import Dashboard from './components/Dashboard';
-import theme from './styles/theme';
-import createEmotionCache from './utils/createEmotionCache';
 import {
   BrowserRouter,
   Route,
   Routes
 } from 'react-router-dom';
+import './App.css';
+import Dashboard from './components/Dashboard';
+import ListPivot from './screens/ListPivot';
 import QuestEdit from './screens/Quests/QuestEdit';
-import { ListView } from './screens/ListView';
+import theme from './styles/theme';
+import createEmotionCache from './utils/createEmotionCache';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -26,7 +25,7 @@ const App = () => {
                 <Route path="/" element={<Dashboard />} >
                   <Route path=":area">
                     <Route path=":objectType">
-                      <Route index element={<ListView />}/>
+                      <Route index element={<ListPivot />}/>
                       <Route path=":id" element={<QuestEdit />} />
                     </Route>
                     {/* <Route path="rooms">

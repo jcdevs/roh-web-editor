@@ -12,11 +12,9 @@ export interface QuestTurnInMob extends QuestObjectIdentifier {};
 
 export interface Quest extends MudObject {
   completionString: string;
-  description: string;
   level: number;
   minFaction: number;
   minLevel: number;
-  name: string;
   preRequisites: (MudId | undefined)[];
   receiveString: string;
   repeatFrequency: number;
