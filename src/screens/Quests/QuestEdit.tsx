@@ -1,6 +1,7 @@
 import { Autocomplete, Box, Button, Checkbox, Divider, FormControlLabel, FormLabel, Grid, TextField } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { getMockQuestArray, getMockQuestIdentifierArray, Quest } from "../../data/interfaces/Quest";
+import { Quest } from "../../data/interfaces/Quest";
+import { getMockQuestArray, getMockQuestIdentifierArray } from "../../data/mock-utils";
 import PrereqRow from "./PrereqRow";
 import SelectWithAmount, { Creature, Item, Room } from "./SelectWithAmount";
 

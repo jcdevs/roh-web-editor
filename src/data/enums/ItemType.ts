@@ -1,0 +1,17 @@
+export enum ItemType {
+  Herb = 4,
+  Weapon = 5,
+  Armor = 6,
+  Potion = 7,
+  Scroll = 8,
+  Wand = 9,
+  Container = 10,
+  Money = 11,
+  Key = 12,
+  Lightsource = 13,
+  Miscellaneous = 14,
+  SongScroll = 15,
+  Poison = 16,
+  Bandage = 17,
+  LotteryTicket = 18,
+}
