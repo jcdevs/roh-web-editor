@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import QuestList from "./Quests/QuestList";
+import ListView from "./ListView";
 
 interface ListPivotProps {}
 
@@ -8,13 +8,13 @@ const ListPivot = (props: ListPivotProps) => {
 
   switch(urlParams.objectType) {
     case 'rooms':
-      return <QuestList />
+      return <ListView />
     case 'items':
-      return <QuestList />
+      return <ListView />
     case 'creatures':
-      return <QuestList />
+      return <ListView />
     case 'quests':
-      return <QuestList />
+      return <ListView />
     default:
       return <></>;
   }

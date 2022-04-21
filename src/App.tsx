@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import Dashboard from './components/Dashboard';
-import ListPivot from './screens/ListPivot';
+import ListView from './screens/ListView';
 import QuestEdit from './screens/Quests/QuestEdit';
 import theme from './styles/theme';
 import createEmotionCache from './utils/createEmotionCache';
@@ -25,14 +25,14 @@ const App = () => {
                 <Route path="/" element={<Dashboard />} >
                   <Route path=":area">
                     <Route path=":objectType">
-                      <Route index element={<ListPivot />}/>
+                      <Route index element={<ListView />}/>
                       <Route path=":id" element={<QuestEdit />} />
                     </Route>
-                    {/* <Route path="rooms">
-                      <Route index element={<QuestList />}/>
-                      <Route path=":roomId" element={<QuestEdit />} />
+                     <Route path="rooms">
+                      <Route index element={<ListView />}/>
+                      <Route path=":id" element={<> </>} />
                     </Route>
-                    <Route path="objects">
+                   {/* <Route path="objects">
                       <Route index element={<QuestList />}/>
                       <Route path=":objectId" element={<QuestEdit />} />
                     </Route>

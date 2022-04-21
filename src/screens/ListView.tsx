@@ -14,9 +14,9 @@ const ListView = (props: ListViewProps) => {
   const mockItems = useMemo(() => getMockQuestArray(10), []);
 
   const rows = useMemo(() => {
-    return mockItems.map(quest => {
+    return mockItems.map(item => {
       return (
-        <ListRow {...quest} onClick={() => nav(`${loc.pathname}/${quest.id.id}`)} key={`${getListKey(quest)}`} />
+        <ListRow {...item} onClick={() => nav(`${loc.pathname}/${item.id.id}`)} key={`${getListKey(item)}`} />
       );
     });
   }, [mockItems, loc.pathname, nav]);
