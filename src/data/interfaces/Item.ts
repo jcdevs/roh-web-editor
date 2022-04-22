@@ -1,3 +1,4 @@
+import { ItemFlag } from "../enums/ItemFlag";
 import { ItemType } from "../enums/ItemType";
 import { Material } from "../enums/Material";
 import { Size } from "../enums/Size";
@@ -36,4 +37,16 @@ export interface Item extends MudObject {
   recipe: string;
   reqSkill: number;
   compass: string;
+  flags: ItemFlag[];
+  increaseType: 'skill' | 'language';
+  increase: string;
+  increaseIfUnknown: boolean;
+  increaseAmount: number;
+  increaseOnce: boolean;
+  alchemyEffects: {
+    effect: string;
+    duration: number;
+    strength: number;
+    quality: number;
+  }[];
 }
