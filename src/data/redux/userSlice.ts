@@ -40,7 +40,7 @@ export const authSlice = createSlice({
     //   state.value += action.payload;
     // },
     logout: state => {
-      state = initialState;
+      state.user = null;
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,

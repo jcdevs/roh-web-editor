@@ -1,20 +1,15 @@
 import { Middleware } from "@reduxjs/toolkit";
-import api from "../api/config";
+import axios from "axios";
 
-// after successful login, susbequent requests will have the Authorization header
+// on successful login, susbequent requests will have the Authorization header
+// on logout, remove Authorization header
 export const setAuthHeader: Middleware = store => next => action => {
   if (action.type === 'auth/login/fulfilled') {
-    api.interceptors.request.use(
-      config => {
-        const token = action.payload.token;
-
-        if (token && config.headers) {
-          config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-      },
-      err => Promise.reject(err),
-    );
+    const token = action.payload.token;
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  } else if(action.type === 'auth/logout') {
+    delete axios.defaults.headers.common.Authorization;
   }
+
   return next(action);
 }

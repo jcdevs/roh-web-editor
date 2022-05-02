@@ -3,12 +3,11 @@ import { useCallback, useState } from "react";
 import { LoginParams } from "../data/api";
 import { useAppDispatch } from "../data/hooks/useAppDispatch";
 import { useAppSelector } from "../data/hooks/useAppSelector";
-import { loginThunk, selectAuthError, selectUser } from "../data/redux/userSlice";
+import { loginThunk, selectAuthError } from "../data/redux/userSlice";
 
 interface LoginFormProps {}
 
 export const LoginForm = (props: LoginFormProps) => {
-  const user = useAppSelector(selectUser);
   const errorMsg = useAppSelector(selectAuthError);
   const dispatch = useAppDispatch();
 
