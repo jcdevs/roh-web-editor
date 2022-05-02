@@ -11,6 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React, { useMemo } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
+import LoginLogoutButton from './LoginLogoutButton';
 import { NavList } from './nav/NavList';
 
 const drawerWidth: number = 240;
@@ -126,6 +127,7 @@ function DashboardContent(props: DashboardProps) {
           >
             {title}
           </Typography>
+          <LoginLogoutButton />
           {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />

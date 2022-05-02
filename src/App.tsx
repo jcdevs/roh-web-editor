@@ -8,6 +8,7 @@ import {
 import './App.css';
 import Dashboard from './components/Dashboard';
 import ListView from './screens/ListView';
+import { LoginForm } from './screens/LoginForm';
 import QuestEdit from './screens/Quests/QuestEdit';
 import theme from './styles/theme';
 import createEmotionCache from './utils/createEmotionCache';
@@ -23,6 +24,7 @@ const App = () => {
           <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Dashboard />} >
+                  <Route path="login" element={<LoginForm />} />
                   <Route path=":area">
                     <Route path=":objectType">
                       <Route index element={<ListView />}/>
