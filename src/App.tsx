@@ -7,6 +7,7 @@ import {
 import './App.css';
 import Dashboard from './components/Dashboard';
 import { LoadingBackdrop } from './components/LoadingBackdrop';
+import { RequireAuth } from './components/RequireAuth';
 import ListView from './screens/ListView';
 import { LoginForm } from './screens/LoginForm';
 import QuestEdit from './screens/Quests/QuestEdit';
@@ -21,12 +22,12 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} >
               <Route path="login" element={<LoginForm />} />
-              <Route path=":area">
+              <Route path=":area" element={<RequireAuth />}>
                 <Route path=":objectType">
                   <Route index element={<ListView />}/>
                   <Route path=":id" element={<QuestEdit />} />
                 </Route>
-                  <Route path="rooms">
+                <Route path="rooms">
                   <Route index element={<ListView />}/>
                   <Route path=":id" element={<> </>} />
                 </Route>
