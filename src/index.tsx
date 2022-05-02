@@ -1,15 +1,22 @@
+import { CacheProvider } from '@emotion/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
-import { store } from './data/store';
+import { store } from './data/redux/store';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import createEmotionCache from './utils/createEmotionCache';
+
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <CacheProvider value={clientSideEmotionCache}>
+        <App />
+      </CacheProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

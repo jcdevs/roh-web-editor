@@ -1,15 +1,18 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
-import { post } from "../data/api/config";
-import { useUser } from "../data/hooks/useUser";
-import { User } from "../data/interfaces/User";
+import { LoginParams } from "../data/api";
+import { useAppDispatch } from "../data/hooks/useAppDispatch";
+import { useAppSelector } from "../data/hooks/useAppSelector";
+import { loginThunk, selectAuthError, selectUser } from "../data/redux/userSlice";
 
 interface LoginFormProps {}
 
 export const LoginForm = (props: LoginFormProps) => {
-  const { user, setUser } = useUser();
-  const [formValues, setFormValues] = useState({ name: '', pw: '' });
-  const [errorMessage, setErrorMessage] = useState('');
+  const user = useAppSelector(selectUser);
+  const errorMsg = useAppSelector(selectAuthError);
+  const dispatch = useAppDispatch();
+
+  const [formValues, setFormValues] = useState<LoginParams>({ name: '', pw: '' });
 
   const handleInputChange = useCallback(event => {
     const { name, value } = event.target;
@@ -19,16 +22,9 @@ export const LoginForm = (props: LoginFormProps) => {
     }));
   }, []);
 
-  const submit = useCallback(async () => {
-    try {
-      setErrorMessage('');
-      const user = await post<User>('/login', formValues);
-      setUser(user);
-    } catch(e: any) {
-      console.error(e);
-      setErrorMessage(e.message);
-    }
-  }, [formValues, setUser]);
+  const submit = useCallback(() => {
+    dispatch(loginThunk(formValues));
+  }, [dispatch, formValues]);
 
   return (
     <Box>
@@ -44,7 +40,7 @@ export const LoginForm = (props: LoginFormProps) => {
             <Button onClick={submit} variant="contained" fullWidth>Login</Button>
           </Grid>
           <Grid item>
-            {errorMessage && <Typography color="error" maxWidth={230}>{errorMessage}</Typography>}
+            {errorMsg && <Typography color="error" maxWidth={230}>{errorMsg}</Typography>}
           </Grid>
         </Grid>
       </Grid>
